@@ -1,35 +1,32 @@
-name: Frontend CI/CD
+name: Build and Push Frontend Docker Image
 
 on:
   push:
     branches:
-      - main  # triggers workflow when you push to main branch
-  pull_request:
-    branches:
-      - main
+      - main   # Trigger this workflow on push to main branch
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout your repo
-      - name: Checkout code
-        uses: actions/checkout@v3
+    # Step 1: Checkout your repo
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      # 2️⃣ Log in to Docker Hub
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+    # Step 2: Log in to Docker Hub
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # 3️⃣ Build Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t akashkr/myapp-frontend:latest .
+    # Step 3: Build the Docker image
+    - name: Build Docker image
+      run: |
+        docker build -t akashkr/myapp-frontend:latest .
 
-      # 4️⃣ Push Docker image to Docker Hub
-      - name: Push Docker image
-        run: |
-          docker push akashkr/myapp-frontend:latest
+    # Step 4: Push the Docker image
+    - name: Push Docker image
+      run: |
+        docker push akashkr/myapp-frontend:latest
